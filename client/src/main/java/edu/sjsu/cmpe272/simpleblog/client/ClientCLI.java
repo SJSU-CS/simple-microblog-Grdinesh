@@ -1,4 +1,4 @@
-package com.example.client;
+package edu.sjsu.cmpe272.simpleblog.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -30,6 +30,7 @@ public class ClientCLI {
 
     @Command(name = "create", description = "Generates a new ID and saves it to mb.ini.")
     static class CreateUserCommand implements Runnable {
+        @Parameters(index = "0") String username;
         @Override
         public void run() {
             try {
@@ -46,11 +47,6 @@ public class ClientCLI {
                 KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
                 keyGen.initialize(2048);
                 KeyPair pair = keyGen.generateKeyPair();
-
-                System.out.print("Enter username: ");
-                Scanner scanner = new Scanner(System.in);
-                String username = scanner.nextLine();
-
                 try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(CONFIG_FILE_PATH))) {
                     oos.writeObject(username);
                     oos.writeObject(pair.getPublic());
